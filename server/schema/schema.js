@@ -1,5 +1,7 @@
 const {projects, clients}=require('../mockData');
 const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLList}=require('graphql');
+const Project=require('../models/Project');
+const Client=require('../models/Client');
 
 //Client type:
 const ClientType=new GraphQLObjectType({
@@ -40,7 +42,7 @@ const ProjectType=new GraphQLObjectType({
       client:{
          type:ClientType,
          resolve(parent,args){
-            return clients.find(client=>client.id===parent.clientId)
+            return Client.findById(parent.clientId)
          }
       }
    })
@@ -53,7 +55,7 @@ const RootQuery=new GraphQLObjectType({
       clients:{
          type: new GraphQLList(ClientType),
          resolve(parent,args){
-            return clients;
+            return Client.find();
          }
       },
       //Single client:
@@ -67,14 +69,14 @@ const RootQuery=new GraphQLObjectType({
          },
          //Returning the clients with that id:
          resolve(parent,args){
-            return clients.find(client=>client.id===args.id)
+            return Client.findById(args.id);
          }
       },
       //All projects:
       projects:{
          type:new GraphQLList(ProjectType),
          resolve(parent,args){
-            return projects
+            return Project.find();
          }
       },
       //Single project:
@@ -86,7 +88,7 @@ const RootQuery=new GraphQLObjectType({
             }
          },
          resolve(parent,args){
-            return projects.find(project=>project.id===args.id)
+            return Project.findById(args.id);
          }
       }
    }
