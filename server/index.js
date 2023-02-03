@@ -4,6 +4,7 @@ const {graphqlHTTP}=require('express-graphql');
 const schema=require('./schema/schema');
 const connectDB=require('./config/db');
 const mongoose=require('mongoose');
+const cors=require('cors');
 
 const app=express();
 const PORT=process.env.PORT||8000;
@@ -11,6 +12,7 @@ const PORT=process.env.PORT||8000;
 mongoose.set('strictQuery',false);
 connectDB();
 
+app.use(cors());
 app.use('/graphql',graphqlHTTP({
    schema,
    graphiql:process.env.NODE_ENV==='development',
