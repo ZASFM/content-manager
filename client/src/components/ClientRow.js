@@ -5,18 +5,18 @@ import { GET_CLIENTS } from './queries/ClientQueries';
 
 const ClientRow = ({ client }) => {
 
-   const {deleteClient}=useMutation(DELETE_CLIENT,{
-      variables:{id:client.id},
+   const { delete_Client } = useMutation(DELETE_CLIENT, {
+      variables: { id: client.id },
       //refetching the browser:
       //refetchQueries:[{query:GET_CLIENTS}],
-      //refecthing the browser with the update the cache:
-      update(cache,{data:{deleteClient}}){
-         const {clients}=cache.readQuery({
-            query:GET_CLIENTS
+      //updating my all clients array to no to be the one that i have deleted, and reloading:
+      update(cache, { data: { delete_Client } }) {
+         const { clients } = cache.readQuery({
+            query: GET_CLIENTS
          });
          cache.writeQuery({
-            query:GET_CLIENTS,
-            data:{clients:clients.filter(client=>client.id!==deleteClient.id)}
+            query: GET_CLIENTS,
+            data: { clients: clients.filter(client => client.id !== delete_Client.id) }
          });;
       }
    });
@@ -28,8 +28,8 @@ const ClientRow = ({ client }) => {
          <td>{client.phone}</td>
          <td>
             <button className="btn btn-danger btn-sm">
-               <FaTrashAlt 
-                  onClick={deleteClient}
+               <FaTrashAlt
+                  onClick={delete_Client}
                />
             </button>
          </td>
