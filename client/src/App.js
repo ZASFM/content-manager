@@ -3,6 +3,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import Project from "./pages/Project";
 
 //handling apollo cache error memory loss:
 const cache = new InMemoryCache({
@@ -44,6 +45,10 @@ const App = () => {
               <Route
                 path="*"
                 element={<NotFound />}
+              />
+              <Route
+                path="projects/:id"
+                element={<Project />}
               />
             </Routes>
           </div>
