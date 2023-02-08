@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "@apollo/client"
 import { FaList } from "react-icons/fa"
 import { GET_PROJECTS } from "./queries/ProjectQueries"
 import { GET_CLIENTS } from "./queries/ClientQueries"
+import { ADD_PROJECT } from "../mutations/projectMutation"
 
 const AddProjectModal = () => {
    const [name, setName] = useState('');
@@ -12,10 +13,23 @@ const AddProjectModal = () => {
 
    const { error, loading, data } = useQuery(GET_CLIENTS);
 
+   const [addProject]=useMutation(ADD_PROJECT,{
+      variables:{name,description,status,clientId},
+      update(cache,{data:{addProject}}){
+         const{projects}=cache.readQuery({query:GET_PROJECTS});
+         cache.writeQuery({
+            query:GET_PROJECTS,
+            data:{projects:[...projects, addProject]}
+         })
+      }
+   })
+
    const handleSubmit = (e) => {
       e.preventDefault();
 
       if (!name || !description || !status || !clientId) return;
+
+      addProject(name,description,status,clientId);
 
       setName('');
       setDescription('');
