@@ -130,6 +130,7 @@ const mutation = new GraphQLObjectType({
          }
       },
 
+      //Deleting a client and deleting all the projects along with him:
       deleteClient: {
          type: ClientType,
          args: {
@@ -138,7 +139,11 @@ const mutation = new GraphQLObjectType({
             }
          },
          resolve(parent, args) {
-            return Client.findByIdAndRemove(args.id)
+            Project.find({ clientId: args.id }).then(projects => {
+               projects.forEach(project => {
+                  project.remove();
+               })
+            })
          }
       },
 
