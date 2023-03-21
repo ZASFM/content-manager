@@ -1,4 +1,3 @@
-const { projects, clients } = require('../mockData');
 const {
    GraphQLObjectType,
    GraphQLID,
